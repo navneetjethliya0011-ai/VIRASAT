@@ -49,7 +49,7 @@ class GameState {
   save() {
     this.state.lastPlayed = Date.now();
     try {
-      localStorage.setItem(CONFIG.saveKey, JSON.stringify(this.state);
+      localStorage.setItem(CONFIG.saveKey, JSON.stringify(this.state));
     } catch (e) {
       console.warn('Save failed — progress not persisted', e);
     }
@@ -105,7 +105,7 @@ class GameState {
     return this.state.quests[questId] ? this.state.quests[questId].flags[key] !== undefined ? this.state.quests[questId].flags[key] : fallback : fallback;
   }
 
-  completeQuest(questId, opts) ) {
+  completeQuest(questId, opts) {
     const q = this.getQuest(questId);
     q.status = 'completed';
     if (opts && opts.stage !== undefined) q.stage = opts.stage;
@@ -118,20 +118,24 @@ class GameState {
   }
 
   addToInventory(itemId, meta) {
-    if (this.hasItem(itemId) return { added: false, reason: 'already' };
+    if (this.hasItem(itemId)) return { added: false, reason: 'already' };
     this.state.inventory.push({ id: itemId, at: Date.now(), ...(meta || {}) });
     this.save();
     return { added: true };
   }
 
-  hasItem(itemId) {
-    return this.state.inventory.some(it => it.id === itemId;
+  addInventory(itemId, meta) {
+    return this.addToInventory(itemId, meta);
   }
 
-  addJournal(entryIds, via) ) {
+  hasItem(itemId) {
+    return this.state.inventory.some(it => it.id === itemId);
+  }
+
+  addJournal(entryIds, via) {
     const added = [];
-    for (const id of (Array.isArray(entryIds) ? entryIds : [entryIds]) {
-      if (!this.state.journal.includes(id) {
+    for (const id of (Array.isArray(entryIds) ? entryIds : [entryIds])) {
+      if (!this.state.journal.includes(id)) {
         this.state.journal.push(id);
         added.push({ id, via: via || null });
       }
@@ -140,28 +144,28 @@ class GameState {
     return added;
   }
 
-  hasJournal(entryId) ) {
+  hasJournal(entryId) {
     return this.state.journal.includes(entryId);
   }
 
-  addLanguage(wordIds) ) {
+  addLanguage(wordIds) {
     const added = [];
-    for (const id of (Array.isArray(wordIds) ? wordIds : [wordIds]) {
-      if (!this.state.language.includes(id) {
+    for (const id of (Array.isArray(wordIds) ? wordIds : [wordIds])) {
+      if (!this.state.language.includes(id)) {
         this.state.language.push(id);
-        added.push(id;
+        added.push(id);
       }
     }
     if (added.length) this.save();
     return added;
   }
 
-  hasLanguage(wordId) ) {
-    return this.state.language.includes(wordId;
+  hasLanguage(wordId) {
+    return this.state.language.includes(wordId);
   }
 
-  discoverLocation(locId) ) {
-    if (!this.state.discoveredLocations.includes(locId) {
+  discoverLocation(locId) {
+    if (!this.state.discoveredLocations.includes(locId)) {
       this.state.discoveredLocations.push(locId);
       this.save();
       return true;
@@ -169,17 +173,17 @@ class GameState {
     return false;
   }
 
-  isDiscovered(locId) ) {
+  isDiscovered(locId) {
     return this.state.discoveredLocations.includes(locId);
   }
 
-  addPlayTime(dt) ) {
+  addPlayTime(dt) {
     this.state.playTime += dt;
 
     if (this.state.playTime %  30 < dt) this.save();
   }
 
-  setCompletion(stats) ) {
+  setCompletion(stats) {
     this.state.completion = stats;
     this.save();
   }

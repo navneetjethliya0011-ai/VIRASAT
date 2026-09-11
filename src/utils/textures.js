@@ -260,3 +260,26 @@ export function radialGlowTexture() {
    g.fill();
   return toTex(c);
 }
+
+export function makeSandstoneTexture(w, h) { return sandstoneTexture(w, h); }
+export function makeBannerTexture(w, h) {
+  const c = canvas(w ||  64, h ||  64);
+  const g = c.getContext('2d');
+  g.fillStyle = '#2b6cb0';
+   g.fillRect(0,0,c.width,c.height);
+  const stripes = 4;
+  for (let i =  0; i < stripes; i++) {
+    g.fillStyle = i % 2 === 0 ? '#2b6cb0' : '#e8b65a';
+    g.fillRect(0, (c.height / stripes) * i, c.width, c.height / stripes);
+  }
+  g.fillStyle = '#f5e6c8';
+   g.font = 'bold 16px Georgia, serif';
+   g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  g.fillText('◈', c.width / 2, c.height / 2);
+   return toTex(c, { repeat: true });
+}
+
+export function makeWaterTexture(w, h) {
+  return plasterTexture(w ||  64, h ||  64);
+}
